@@ -1,5 +1,6 @@
 function Get-TargetResource
 {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSDSCUseVerboseMessageInDSCResource", "")]
     [CmdletBinding()]
     [OutputType([System.Collections.Hashtable])]
     param
@@ -76,6 +77,7 @@ function Get-TargetResource
 
 function Set-TargetResource
 {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSDSCUseVerboseMessageInDSCResource", "")]
     [CmdletBinding()]
     param
     (
@@ -456,7 +458,7 @@ function CreateMissingExDatabases
             continue
         }
 
-        if ($targetVolume -ne $null)
+        if ($null -ne $targetVolume)
         {
             if ($targetVolume -ne -1)
             {
@@ -715,14 +717,14 @@ function FindFirstAvailableVolumeNumber
         return 1
     }
 
-    $currentFolders = Get-ChildItem -LiteralPath "$($AutoDagVolumesRootFolderPath)" | where {$_.GetType().Name -eq "DirectoryInfo"} | Sort-Object
+    $currentFolders = Get-ChildItem -LiteralPath "$($AutoDagVolumesRootFolderPath)" | Where-Object {$_.GetType().Name -eq "DirectoryInfo"} | Sort-Object
 
     for ($i = 1; $i -lt 999; $i++)
     {
         $existing = $null
-        $existing = $currentFolders | where {$_.Name -eq "$($VolumePrefix)$($i)"}
+        $existing = $currentFolders | Where-Object {$_.Name -eq "$($VolumePrefix)$($i)"}
 
-        if ($existing -eq $null)
+        if ($null -eq $existing)
         {
             return $i
         }
@@ -798,7 +800,7 @@ function VolumeMountPointNotLastInList
     {
         $values = $global:VolumeToMountPointMap[$key]
 
-        if ($values -ne $null)
+        if ($null -ne $values)
         {
             for ($i = 0; $i -lt $values.Count; $i++)
             {
